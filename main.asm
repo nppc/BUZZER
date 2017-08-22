@@ -34,14 +34,15 @@ PWM_loop:
 		; PWM the buzzer at 50% duty cycle
 		sbic PINB, CONTROL_PIN		; 1/2
 		rjmp PWM_loop				; 2
-		ldi tmp, BUZZ_Out_OFF
+		ldi tmp, BUZZ_Out_ON		; 1
 		out PORTB, tmp		 		; 1 turn buzzer ON
 		rcall DELAY					; 3
 		nop							; 1 align for sbic
 		nop							; 1 align for sbic
 		nop							; 1 align for rjmp
 		nop							; 1 align for rjmp
-		out PORTB, BUZZ_Out_OFF 	; 1 turn buzzer OFF
+		ldi tmp, BUZZ_Out_OFF		; 1
+		out PORTB, tmp 				; 1 turn buzzer OFF
 		rcall DELAY					; 3
 		rjmp PWM_loop				; 2
 
