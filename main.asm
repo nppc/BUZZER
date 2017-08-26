@@ -31,6 +31,11 @@
 		cli
 		; 8Mhz (Leave 8 mhz osc with no prescaler)
 		; Write signature for change enable of protected I/O register
+		ldi tmp, high (RAMEND) ; Main program start
+		out SPH,tmp ; Set Stack Pointer
+		ldi tmp, low (RAMEND) ; to top of RAM
+		out SPL,tmp
+
 		ldi tmp, 0xD8
 		out CCP, tmp
 		ldi tmp, (0 << CLKPS3) | (0 << CLKPS2) | (0 << CLKPS1) | (0 << CLKPS0) ;  prescaler is 1 (8mhz)
@@ -38,6 +43,12 @@
 		
 		ldi tmp, BUZZ_Out_ON
 		out DDRB, tmp 					; configure pins as output
+
+;
+		ldi tmp, 	(1 << CONTROL_PIN)	; enable pull-up to protect floating input when no power on FC
+		out PUEB,	tmp				; 
+		out PORTB, tmp				; all pins to LOW except pull-up
+;
 		
 PWM_loop:
 		; PWM the buzzer at 50% duty cycle
